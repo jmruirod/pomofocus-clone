@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "ArialRounded";
+  font-display: swap;
+  src: url("/fonts/ArialRounded/Arial_Rounded_MT.ttf") format("truetype");
+}
+@font-face {
+  font-family: "ArialRounded";
+  font-display: swap;
+  src: url("/fonts/ArialRounded/Arial-Rounded-MT-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+html {
+  font-family: "ArialRounded";
+}
