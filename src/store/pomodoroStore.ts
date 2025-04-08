@@ -1,66 +1,61 @@
 import { reactive } from "vue";
+import { useTimer } from "@/composables/useTimer";
+import { useTabs } from "@/composables/useTabs";
+import { useNotifications } from "@/composables/useNotifications";
+import { config } from "@/config/config";
+import { TabType } from "@/enum/TabType";
 
-const pomodoroTime = 5;
-const shortBreakTime = 6;
-const longBreakTime = 15 * 60;
-const longBreakInterval = 4;
-const autoStartPomodoro = true;
-const autoStartBreak = true;
-let interval: number;
 export const pomodoroStore = reactive({
-  isRunning: false,
   currentInterval: 1,
-  currentBreak: 1,
-  currentTime: pomodoroTime,
-  tabs: [
-    { name: "Pomodoro", active: true, time: pomodoroTime },
-    { name: "Short Break", active: false, time: shortBreakTime },
-    { name: "Long Break", active: false, time: longBreakTime },
-  ],
+  ...useTimer(),
+  ...useTabs(),
+  ...useNotifications(),
 
-  handleTabClick(tab: string) {
-    clearInterval(interval);
-    this.tabs.forEach((t) => {
-      t.active = t.name == tab ? true : false;
-
-      if (t.active) {
-        this.currentTime = t.time;
-      }
-    });
-
-    this.isRunning = false;
+  initializeStore() {
+    config.readConfig();
+    this.updateTabsTime();
+    this.setTime(this.getActiveTime());
   },
 
-  selectTab(tab: string) {
-    this.tabs.forEach((t) => {
-      t.active = t.name == tab ? true : false;
-    });
+  updateStore() {
+    this.updateTabsTime();
+
+    if (!this.isRunning) {
+      this.setTime(this.getActiveTime());
+    }
+  },
+
+  handleTabClick(tab: TabType) {
+    this.stopTimer();
+    this.selectTab(tab);
+    this.setTime(this.getActiveTime());
+  },
+
+  startNextTab() {
+    const isLongBreak = this.currentInterval % config.longBreakInterval === 0;
+    const message = this.getActiveTab() === TabType.Pomodoro ? "Time to focus!" : isLongBreak ? "Time to take a long break!" : "Time to take a short break!";
+    const nextTab = this.getActiveTab() === TabType.Pomodoro ? (isLongBreak ? TabType.LongBreak : TabType.ShortBreak) : TabType.Pomodoro;
+    this.stopTimer();
+    this.showNotification(message);
+    this.selectTab(nextTab);
+    this.setTime(this.getActiveTime());
+
+    if (this.getActiveTab() === TabType.Pomodoro) {
+      this.currentInterval++;
+    }
+
+    setTimeout(() => {
+      if (this.getActiveTab() === TabType.Pomodoro ? config.autoStartPomodoro : config.autoStartBreak) {
+        this.startTimer(() => this.startNextTab());
+      }
+    }, 700);
   },
 
   toggleRunning() {
-    this.isRunning = !this.isRunning;
     if (this.isRunning) {
-      const isLongBreak = this.currentInterval % longBreakInterval === 0;
-      interval = setInterval(() => {
-        console.log("dentro", this.currentTime);
-        if (this.isRunning && this.currentTime > 0) {
-          this.currentTime--;
-        }
-
-        if (this.currentTime === 0) {
-          this.selectTab(this.tabs[0].active ? (isLongBreak ? this.tabs[2].name : this.tabs[1].name) : this.tabs[0].name);
-          this.currentTime = this.tabs[0].active ? pomodoroTime : isLongBreak ? longBreakTime : shortBreakTime;
-          if (this.tabs[0].active) {
-            this.currentInterval++;
-            this.currentBreak++;
-          }
-          this.isRunning = this.tabs[0].active ? autoStartPomodoro : autoStartBreak;
-          if (!this.isRunning) {
-            clearInterval(interval);
-          }
-        }
-      }, 1000);
-      console.log("inicia", interval);
+      this.stopTimer();
+    } else {
+      this.startTimer(() => this.startNextTab());
     }
   },
 
@@ -68,7 +63,6 @@ export const pomodoroStore = reactive({
     const response = confirm("Do you want to refresh the pomodoro count?");
     if (response) {
       this.currentInterval = 1;
-      this.currentBreak = 1;
     }
   },
 });

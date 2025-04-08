@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ButtonTemplate from "./ButtonTemplate.vue";
+import ButtonTemplate from "@/components/ButtonTemplate.vue";
 
 defineProps<{
   icon?: string;

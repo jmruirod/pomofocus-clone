@@ -1,39 +1,75 @@
-# pomofocus-clone
+# Pomofocus Clone 🍅
 
-This template should help get you started developing with Vue 3 in Vite.
+Este proyecto es un clon de [Pomofocus](https://pomofocus.io/), una aplicación de gestión del tiempo basada en la técnica Pomodoro. Está desarrollado con Vue 3 y Vite, y sigue las mejores prácticas para el desarrollo moderno de aplicaciones web.
 
-## Recommended IDE Setup
+## Características ✨
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- ⏱️ Temporizador Pomodoro con intervalos personalizables.
+- 📝 Seguimiento de tareas y sesiones de trabajo. (En proceso)
+- 🔔 Notificaciones visuales y sonoras.
+- 🖥️ Interfaz de usuario intuitiva y responsive.
 
-## Type Support for `.vue` Imports in TS
+## Tecnologías Utilizadas 🛠️
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- **Vue 3**: Framework de JavaScript para construir interfaces de usuario.
+- **Vite**: Herramienta de construcción rápida para aplicaciones modernas.
+- **TypeScript**: Lenguaje que añade tipos estáticos a JavaScript.
+- **Tailwind CSS**: Framework de CSS para diseñar interfaces de usuario de manera eficiente.
+- **ESLint**: Herramienta para identificar y corregir problemas en el código.
 
-## Customize configuration
+## Configuración del Entorno de Desarrollo 🚀
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+### Requisitos Previos 📋
 
-## Project Setup
+- [Node.js](https://nodejs.org/) (v16 o superior)
+- [pnpm](https://pnpm.io/) (gestor de paquetes)
 
-```sh
-pnpm install
-```
+### Instalación ⚙️
 
-### Compile and Hot-Reload for Development
+1. Clona el repositorio:
 
-```sh
-pnpm dev
-```
+   ```sh
+   git clone https://github.com/tu-usuario/pomofocus-clone.git
+   ```
 
-### Type-Check, Compile and Minify for Production
+2. Navega al directorio del proyecto:
 
-```sh
-pnpm build
-```
+   ```sh
+   cd pomofocus-clone
+   ```
 
-### Lint with [ESLint](https://eslint.org/)
+3. Instala las dependencias:
 
-```sh
-pnpm lint
-```
+   ```sh
+   pnpm install
+   ```
+
+### Ejecución del Proyecto 🏃‍♂️
+
+- **Modo de Desarrollo**:
+
+  ```sh
+  pnpm dev
+  ```
+
+  Esto iniciará un servidor de desarrollo con recarga en caliente.
+
+- **Compilación para Producción**:
+
+  ```sh
+  pnpm build
+  ```
+
+  Esto generará los archivos optimizados para producción en la carpeta `dist`.
+
+- **Linting**:
+
+  ```sh
+  pnpm lint
+  ```
+
+  Esto ejecutará ESLint para identificar y corregir problemas en el código.
+
+## Licencia 📜
+
+Este proyecto está bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más detalles.

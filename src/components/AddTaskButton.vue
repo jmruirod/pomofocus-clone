@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import ButtonTemplate from "./ButtonTemplate.vue";
-
 defineProps<{
   icon?: string;
   text?: string;
@@ -8,10 +6,8 @@ defineProps<{
 </script>
 
 <template>
-  <ButtonTemplate
-    :icon="icon"
-    :text="text"
-    size="5"
-    class="flex justify-center w-full py-4.5 bg-slate-900/10 border-dashed border-2 border-white/50 font-bold"
-  />
+  <button class="flex justify-center gap-1 py-4.5 opacity-80 hover:opacity-100 bg-slate-900/10 border-dashed border-2 border-white/50 rounded-sm font-bold">
+    <img :src="`/images/${icon}.png`" alt="logo" class="h-5 w-5" />
+    <span class="text-white/90 hover:text-white text-sm">{{ text }}</span>
+  </button>
 </template>

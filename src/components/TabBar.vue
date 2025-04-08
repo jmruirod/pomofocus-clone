@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { pomodoroStore } from "../store/pomodoroStore";
+import { pomodoroStore } from "@/store/pomodoroStore";
 </script>
 
 <template>
