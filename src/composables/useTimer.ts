@@ -12,7 +12,7 @@ export function useTimer() {
         currentTime.value--;
       }
 
-      if (currentTime.value === 0) {
+      if (currentTime.value <= 0) {
         callback();
       }
     }, intervalTime);
@@ -24,7 +24,7 @@ export function useTimer() {
   }
 
   function setTime(time: number) {
-    currentTime.value = time;
+    currentTime.value = time * 60;
   }
 
   return {

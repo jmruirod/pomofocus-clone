@@ -2,34 +2,47 @@
 import { pomodoroStore } from "@/store/pomodoroStore";
 import { config } from "@/config/config";
 import SwitchButton from "@/components/SwitchButton.vue";
+import { ref } from "vue";
+
+const form = ref({
+  pomodoroTime: config.pomodoroTime,
+  shortBreakTime: config.shortBreakTime,
+  longBreakTime: config.longBreakTime,
+  longBreakInterval: config.longBreakInterval,
+  autoStartBreak: config.autoStartBreak,
+  autoStartPomodoro: config.autoStartPomodoro,
+});
 
 const emit = defineEmits(["close"]);
 
-const handleInput = (event: Event) => {
-  const input = event.target as HTMLInputElement;
-  const value = parseFloat(input.value);
-  if (isNaN(value)) {
-    input.value = "0.1"; //TODO
+const checkInput = (input: number) => {
+  let value = input;
+  if (isNaN(value) || value <= 0 || value > 999) {
+    value = 1;
   }
+  return value;
+};
 
-  switch (input.name) {
-    case "Pomodoro":
-      config.pomodoroTime = value;
-      break;
-    case "shortBreak":
-      config.shortBreakTime = value;
-      break;
-    case "longBreak":
-      config.longBreakTime = value;
-      break;
-    case "longBreakInterval":
-      config.longBreakInterval = value;
-      break;
-  }
+const checkInputs = () => {
+  form.value.pomodoroTime = checkInput(form.value.pomodoroTime);
+  form.value.shortBreakTime = checkInput(form.value.shortBreakTime);
+  form.value.longBreakTime = checkInput(form.value.longBreakTime);
+  form.value.longBreakInterval = checkInput(form.value.longBreakInterval);
+};
+
+const updateConfig = () => {
+  config.pomodoroTime = form.value.pomodoroTime;
+  config.shortBreakTime = form.value.shortBreakTime;
+  config.longBreakTime = form.value.longBreakTime;
+  config.longBreakInterval = form.value.longBreakInterval;
+  config.autoStartBreak = form.value.autoStartBreak;
+  config.autoStartPomodoro = form.value.autoStartPomodoro;
 };
 
 const handleClose = () => {
   emit("close");
+  checkInputs();
+  updateConfig();
   pomodoroStore.updateStore();
   config.updateLocalStorage();
 };
@@ -57,44 +70,20 @@ const handleClose = () => {
               class="grid grid-cols-3 gap-x-9 [&>label]:opacity-40 [&>label]:font-semibold [&>label]:text-sm [&>input]:px-3 [&>input]:py-2 [&>input]:rounded-md [&>input]:bg-stone-200 [&>input]:outline-none [&>input]:opacity-70"
             >
               <label for="Pomodoro" class="col-start-1">Pomodoro</label>
-              <input
-                name="Pomodoro"
-                type="number"
-                class="col-start-1 row-start-2 w-full"
-                min="1"
-                step="1"
-                :value="config.pomodoroTime"
-                @input="handleInput($event)"
-              />
+              <input name="Pomodoro" type="number" class="col-start-1 row-start-2 w-full" min="1" step="1" v-model="form.pomodoroTime" />
               <label for="shortBreak" class="col-start-2">Short Break</label>
-              <input
-                name="shortBreak"
-                type="number"
-                class="col-start-2 row-start-2 w-full"
-                min="1"
-                step="1"
-                :value="config.shortBreakTime"
-                @input="handleInput($event)"
-              />
+              <input name="shortBreak" type="number" class="col-start-2 row-start-2 w-full" min="1" step="1" v-model="form.shortBreakTime" />
               <label for="longBreak" class="col-start-3">Long Break</label>
-              <input
-                name="longBreak"
-                type="number"
-                class="col-start-3 row-start-2 w-full"
-                min="1"
-                step="1"
-                :value="config.longBreakTime"
-                @input="handleInput($event)"
-              />
+              <input name="longBreak" type="number" class="col-start-3 row-start-2 w-full" min="1" step="1" v-model="form.longBreakTime" />
             </div>
           </div>
 
           <div class="py-2 grid justify-between items-center gap-6">
             <h3 class="font-semibold opacity-60 col-start-1">Auto Start Breaks</h3>
-            <SwitchButton class="col-start-2 justify-self-end" :isActive="config.autoStartBreak" @update:isActive="config.autoStartBreak = $event" />
+            <SwitchButton class="col-start-2 justify-self-end" :isActive="form.autoStartBreak" @update:isActive="form.autoStartBreak = $event" />
 
             <h3 class="font-semibold opacity-60 col-start-1">Auto Start Pomodoros</h3>
-            <SwitchButton class="col-start-2 justify-self-end" :isActive="config.autoStartPomodoro" @update:isActive="config.autoStartPomodoro = $event" />
+            <SwitchButton class="col-start-2 justify-self-end" :isActive="form.autoStartPomodoro" @update:isActive="form.autoStartPomodoro = $event" />
 
             <h3 class="font-semibold opacity-60 col-start-1">Long Break Interval</h3>
             <input
@@ -103,8 +92,7 @@ const handleClose = () => {
               class="w-20 px-3 py-2 rounded-md bg-stone-200 outline-none opacity-70 col-start-2"
               min="1"
               step="1"
-              :value="config.longBreakInterval"
-              @input="handleInput($event)"
+              v-model="form.longBreakInterval"
             />
           </div>
         </div>

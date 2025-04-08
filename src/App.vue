@@ -7,8 +7,13 @@ import { computed, ref, watch } from "vue";
 import { useFormat } from "@/composables/useFormat";
 import ProgressBar from "@/components/ProgressBar.vue";
 import { pomodoroStore } from "@/store/pomodoroStore";
-
+import LoadingScreen from "@/components/LoadingScreen.vue";
 pomodoroStore.initializeStore();
+
+const loading = ref(true);
+setTimeout(() => {
+  loading.value = false;
+}, 1000);
 
 const { formatTime } = useFormat();
 const text = computed(() => (pomodoroStore.tabs[0].active ? "Time to focus!" : "Time for a break!"));
@@ -25,7 +30,10 @@ watch(
 </script>
 
 <template>
+  <LoadingScreen v-if="loading" />
+
   <div
+    v-if="!loading"
     class="h-screen flex flex-col items-center px-4 bg-red-800/80 transition-colors duration-500 ease-in-out"
     :class="{ 'bg-red-800/80': pomodoroStore.tabs[0].active, 'bg-teal-800/80': pomodoroStore.tabs[1].active, 'bg-sky-800/80': pomodoroStore.tabs[2].active }"
   >
