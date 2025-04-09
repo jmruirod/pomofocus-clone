@@ -37,7 +37,7 @@ watch(
     class="h-screen flex flex-col items-center px-4 bg-red-800/80 transition-colors duration-500 ease-in-out"
     :class="{ 'bg-red-800/80': pomodoroStore.tabs[0].active, 'bg-teal-800/80': pomodoroStore.tabs[1].active, 'bg-sky-800/80': pomodoroStore.tabs[2].active }"
   >
-    <div class="flex flex-col gap-6 w-full max-w-2xl items-center">
+    <div class="flex flex-col gap-6 w-full max-w-xl md:max-w-2xl items-center">
       <header class="w-full">
         <div class="flex items-center justify-between py-3">
           <a href="/" class="flex items-center gap-2">
@@ -54,7 +54,7 @@ watch(
         <ProgressBar class="-mt-px" />
       </header>
 
-      <main class="flex flex-col items-center justify-between mt-6 w-full max-w-lg bg-white/10 py-7 rounded-md">
+      <main class="flex flex-col items-center justify-between mt-6 w-full max-w-md md:max-w-lg bg-white/10 py-7 rounded-md">
         <TabBar />
         <div class="p-6 text-8xl md:text-9xl font-bold text-white">{{ formatTime(pomodoroStore.currentTime) }}</div>
         <div class="grid grid-cols-[1fr_200px_1fr] w-full items-center">
@@ -78,7 +78,7 @@ watch(
         </div>
       </main>
 
-      <section class="flex flex-col items-center w-full max-w-lg">
+      <section class="flex flex-col items-center w-full max-w-md md:max-w-lg">
         <div class="flex flex-col items-center">
           <button class="text-white opacity-80 hover:opacity-100 transition-all" @click="pomodoroStore.clearCount()">
             #{{ pomodoroStore.currentInterval }}

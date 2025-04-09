@@ -7,7 +7,7 @@ import { pomodoroStore } from "@/store/pomodoroStore";
     <button
       v-for="tab in pomodoroStore.tabs"
       :key="tab.name"
-      class="py-0.5 px-3 rounded-sm text-white active:translate-y-0.5 transition-transform"
+      class="py-0.5 px-2 sm:px-3 rounded-sm text-white active:translate-y-0.5 transition-transform"
       :class="{ 'bg-slate-900/20 font-bold': tab.active }"
       @click="pomodoroStore.handleTabClick(tab.name)"
     >
